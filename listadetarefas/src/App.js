@@ -1,10 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
+import './App.css'
 
-const message = "Olá mundo"
+
 
 const App = ()=> {
+
+  // let message = "Olá mundo"
+
+  const [message, setMessage] = useState("hello world!")
+
   return (
-    <h1>{message}</h1>
+    <>
+      <div className='container'>{message}</div>
+      <button onClick={() => setMessage("hellooooooooooo!!!!!!!")}>Mudar mensagem</button>
+    </>
   )
 }
 
