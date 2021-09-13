@@ -10,8 +10,9 @@ const AddTask = ({handleTaskAddition}) => {
    }
 
 const handleTaskAddClick = () => {
-    handleTaskAddition(inputData)
-}
+    handleTaskAddition(inputData);
+    setInputData('');
+};
 
     return (  
         <div className="add-task-container">

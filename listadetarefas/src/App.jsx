@@ -1,10 +1,15 @@
 import React, { useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
+import {BrowserRouter as Router, Route} from 'react-router-dom'
 
-import "./App.css";
 import AddTask from "./components/AddTask";
-
 import "./components/Tasks";
 import Tasks from "./components/Tasks";
+import Header from "./components/Header";
+import TaskDetails from "./components/TaskDetails";
+
+import "./App.css";
+
 
 const App = () => {
   
@@ -24,7 +29,7 @@ const App = () => {
   const handleTaskAddition = (taskTitle) => {
       const newTasks = [...tasks, 
         {
-          id: Math.random(10), 
+          id: uuidv4(), 
           title: taskTitle,
           completed: false
         }];
@@ -32,15 +37,46 @@ const App = () => {
         setTasks(newTasks);
   };
 
+  const handleTaskDeletion = (taskId) => {
+    const newTasks = tasks.filter(task => task.id !== taskId);
+    setTasks(newTasks);
+  }
+
+  const handleTaskClick = (taskId) => {
+      const newTasks = tasks.map(task => {
+        if (task.id === taskId) return {...task, completed: !task.completed}
+
+        return task;
+      });
+
+      setTasks(newTasks)
+  };
+
   
 
   return (
-    <>
+    <Router>
       <div className="container">
-        <AddTask handleTaskAddition={handleTaskAddition}/>
-        <Tasks tasks={tasks}/>
+        <Header />
+          <Route path="/" 
+                 exact 
+                 render={()=> (
+                    <>
+                             <AddTask handleTaskAddition={handleTaskAddition}/>
+                             <Tasks tasks={tasks} 
+                                    handleTaskClick={handleTaskClick}
+                                    handleTaskDeletion={handleTaskDeletion}/>
+                    </>
+
+
+                 )}
+            />
+            <Route path="/:taskTitle"
+                   exact
+                   component={TaskDetails}
+            /> 
       </div>
-    </>
+    </Router>
   );
 };
 
